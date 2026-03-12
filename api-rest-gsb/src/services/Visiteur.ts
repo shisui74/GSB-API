@@ -1,10 +1,25 @@
 import { VisiteurModel, IVisiteurDocument } from '../models/Visiteur';
-import { ICreateVisiteur } from '../models/interfaces/IVisiteur';
+import { ICreateVisiteur, IVisiteur } from '../models/interfaces/IVisiteur';
 
 /**
  * Service pour gérer la logique métier des visiteurs
  */
 export class VisiteurService {
+
+  /**
+   * Détermine si un visiteur est junior.
+   */
+  public isJunior(visiteur: Pick<IVisiteur, 'dateEmbauche'>): boolean {
+    if (!visiteur.dateEmbauche) {
+      return true;
+    }
+
+    const now = new Date();
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+    return visiteur.dateEmbauche > oneYearAgo;
+  }
   
   /**
    * Créer un nouvel visiteur
