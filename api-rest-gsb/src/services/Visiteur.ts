@@ -1,26 +1,13 @@
 import { VisiteurModel, IVisiteurDocument } from '../models/Visiteur';
-import { ICreateVisiteur, IVisiteur } from '../models/interfaces/IVisiteur';
+import { ICreateCompteVisiteur, ICreateVisiteur } from '../models/interfaces/IVisiteur';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 /**
  * Service pour gérer la logique métier des visiteurs
  */
 export class VisiteurService {
 
-  /**
-   * Détermine si un visiteur est junior.
-   */
-  public isJunior(visiteur: Pick<IVisiteur, 'dateEmbauche'>): boolean {
-    if (!visiteur.dateEmbauche) {
-      return true;
-    }
-
-    const now = new Date();
-    const oneYearAgo = new Date(now);
-    oneYearAgo.setFullYear(now.getFullYear() - 1);
-
-    return visiteur.dateEmbauche > oneYearAgo;
-  }
-  
   /**
    * Créer un nouvel visiteur
    */
@@ -80,4 +67,76 @@ export class VisiteurService {
       throw error;
     }
   }
+
+  public async creerUnCompte(visiteurData: ICreateCompteVisiteur): Promise<IVisiteurDocument> {
+
+
+    try {
+      // Vérifier si l'email existe déjà
+      const existingVisiteur = await VisiteurModel.findOne({ email: visiteurData.email });
+
+
+      if (existingVisiteur) {
+        throw new Error(`Un visiteur avec l'email ${visiteurData.email} existe déjà`);
+      }
+      // Créer et sauvegarder le visiteur
+      const hashedPassword = await bcrypt.hash(visiteurData.password, 10);
+      const visiteur = new VisiteurModel({
+        email: visiteurData.email,
+        password: hashedPassword,
+        nom: visiteurData.nom,
+        prenom: visiteurData.prenom,
+        telephone: visiteurData.telephone,
+        dateEmbauche: visiteurData.dateEmbauche
+      });
+      await visiteur.save();
+      return visiteur
+    } catch (error: any) {
+      // Gestion des erreurs de validation Mongoose
+      if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map((err: any) => err.message);
+        const errorMessage = `Validation échouée: ${messages.join(', ')}`;
+        console.error('[ValidationError]', errorMessage);
+        throw new Error(errorMessage);
+      }
+      console.error('[Error]', error);
+      throw error;
+    }
+  }
+
+
+  public async seConnecter(email: string, password: string): Promise<{ token: string; visiteur: IVisiteurDocument }> {
+    try {
+      const visiteur = await VisiteurModel.findOne({ email });
+
+
+      if (!visiteur) {
+        throw new Error('Email ou mot de passe incorrect');
+      }
+      if (!visiteur.password) {
+        throw new Error('Compte invalide: mot de passe absent');
+      }
+      const isPasswordValid = await bcrypt.compare(password, visiteur.password);
+      if (!isPasswordValid) {
+        throw new Error('Email ou mot de passe incorrect');
+      }
+      const token = jwt.sign(
+        { userId: visiteur._id, role: 'visiteur' },
+        process.env.JWT_SECRET as string,
+        { expiresIn: '1h', algorithm: 'HS256' }
+      );
+      return { token, visiteur };
+
+
+
+
+    } catch (error: any) {
+      if (error.name === 'CastError') {
+        throw new Error(`Error lors de la connexion: ${error.message}`);
+      }
+      throw error;
+    }
+  }
+
 }
+

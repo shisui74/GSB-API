@@ -1,6 +1,35 @@
 import { PortefeuilleModel, IPortefeuille } from '../models/Portefeuille';
 
 export class PortefeuilleService {
+
+  /**
+   * Retourne le nombre total de praticiens dans le portefeuille du visiteur
+   */
+  public async getNombrePortefeuille(visiteurId: string): Promise<number> {
+    try {
+      const count = await PortefeuilleModel.countDocuments({ 
+        visiteur: visiteurId 
+      });
+      return count;
+    } catch (error) {
+      throw new Error('Erreur lors du comptage du portefeuille');
+    }
+  }
+
+  /**
+   * Retourne le nombre de praticiens dans le portefeuille actif du visiteur
+   */
+  public async getNombrePortefeuilleActif(visiteurId: string): Promise<number> {
+    try {
+      const count = await PortefeuilleModel.countDocuments({ 
+        visiteur: visiteurId,
+        dateFinSuivi: null
+      });
+      return count;
+    } catch (error) {
+      throw new Error('Erreur lors du comptage du portefeuille actif');
+    }
+  }
   
   // Ajouter
   public async ajouter(visiteurId: string, praticienId: string): Promise<IPortefeuille> {

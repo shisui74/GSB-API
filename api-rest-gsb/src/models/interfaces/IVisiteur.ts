@@ -8,6 +8,7 @@ export interface IVisiteur {
   nom: string;
   prenom: string;
   telephone: string;
+  password?: string;
   email: string;
   dateCreation?: Date;
   dateEmbauche?: Date;
@@ -24,4 +25,12 @@ export interface ICreateVisiteur {
   prenom: string;
   email: string;
   telephone: string;
+}
+
+/**
+ * Interface pour la création d'un compte visiteur
+ */
+export interface ICreateCompteVisiteur extends ICreateVisiteur {
+  password: string;
+  dateEmbauche?: Date;
 }

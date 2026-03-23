@@ -5,7 +5,7 @@ jest.mock('../models/Visiteur');
 
 import { VisiteurService } from '../services/Visiteur';
 import { VisiteurModel } from '../models/Visiteur';
-import { ICreateVisiteur, IVisiteur } from '../models/interfaces/IVisiteur';
+import { ICreateVisiteur } from '../models/interfaces/IVisiteur';
 
 
 describe('VisiteurService.createVisiteur', () => {
@@ -129,37 +129,5 @@ describe('VisiteurService.createVisiteur', () => {
       expect(VisiteurModel.findOne).toHaveBeenCalledWith({ email: 'email-invalide' });
       expect(saveMock).toHaveBeenCalledTimes(1);
     });
-  });
-});
-
-describe('VisiteurService.isJunior', () => {
-  let service: VisiteurService;
-
-  beforeEach(() => {
-    service = new VisiteurService();
-  });
-
-  test('retourne true si dateEmbauche absente', () => {
-    const visiteurSansDate = { dateEmbauche: undefined } as Pick<IVisiteur, 'dateEmbauche'>;
-
-    expect(service.isJunior(visiteurSansDate)).toBe(true);
-  });
-
-  test('retourne true si embauche il y a moins de 1 an', () => {
-    const dateRecente = new Date();
-    dateRecente.setMonth(dateRecente.getMonth() - 6);
-
-    const visiteur = { dateEmbauche: dateRecente } as Pick<IVisiteur, 'dateEmbauche'>;
-
-    expect(service.isJunior(visiteur)).toBe(true);
-  });
-
-  test('retourne false si embauche il y a plus de 1 an', () => {
-    const dateAncienne = new Date();
-    dateAncienne.setFullYear(dateAncienne.getFullYear() - 2);
-
-    const visiteur = { dateEmbauche: dateAncienne } as Pick<IVisiteur, 'dateEmbauche'>;
-
-    expect(service.isJunior(visiteur)).toBe(false);
   });
 });
