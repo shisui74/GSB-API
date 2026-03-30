@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">46.8% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/141</span>
+                <span class='fraction'>66/141</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">46.8% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>47/141</span>
+                <span class='fraction'>66/141</span>
             </div>
         
             
@@ -255,25 +255,25 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -396,26 +396,26 @@ export class VisiteurService {
   /**
    * Récupérer un visiteur par son ID (Version allégée aussi !)
    */
-  public <span class="fstat-no" title="function not covered" >async getVisiteurById(id: string): Promise&lt;IVisiteurDocument | null&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      const visiteur = await VisiteurModel.findById(id)</span>
-<span class="cstat-no" title="statement not covered" >        // 👇 MODIFICATION ICI : On applique le même filtre que pour la liste</span>
-<span class="cstat-no" title="statement not covered" >        .select('nom prenom email telephone -_id')</span>
-<span class="cstat-no" title="statement not covered" >        </span>
-<span class="cstat-no" title="statement not covered" >        // On ne met PAS de .populate('portefeuille'), donc il ne s'affichera pas.</span>
-<span class="cstat-no" title="statement not covered" >        .exec();</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >      if (!visiteur) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(`Visiteur avec l'ID ${id} introuvable`);</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >      return visiteur;</span>
-<span class="cstat-no" title="statement not covered" >    } catch (error: any) {</span>
-<span class="cstat-no" title="statement not covered" >      if (error.name === 'CastError') {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(`ID invalide: ${id}`);</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >      throw error;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  public async getVisiteurById(id: string): Promise&lt;IVisiteurDocument | null&gt; {
+    try {
+      const visiteur = await VisiteurModel.findById(id)
+        // 👇 MODIFICATION ICI : On applique le même filtre que pour la liste
+        .select('nom prenom email telephone -_id')
+        
+        // On ne met PAS de .populate('portefeuille'), donc il ne s'affichera pas.
+        .exec();
+&nbsp;
+      if (!visiteur) {
+        throw new Error(`Visiteur avec l'ID ${id} introuvable`);
+      }
+      return visiteur;
+    } catch (error: any) {
+      if (error.name === 'CastError') {
+        throw new Error(`ID invalide: ${id}`);
+      }
+      throw error;
+    }
+  }
 &nbsp;
   public <span class="fstat-no" title="function not covered" >async creerUnCompte(visiteurData: ICreateCompteVisiteur): Promise&lt;IVisiteurDocument&gt; {</span>
 <span class="cstat-no" title="statement not covered" ></span>
@@ -496,7 +496,7 @@ export class VisiteurService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-23T12:55:54.685Z
+                at 2026-03-26T14:20:06.579Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
