@@ -38,6 +38,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           application_name: GSB
           environment_name: GSB-env
           version_label: ${{ github.sha }}-${{ github.run_number }}
