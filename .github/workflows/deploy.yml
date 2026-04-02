@@ -1,0 +1,37 @@
+name: Deploy master
+on:
+  push:
+    branches:
+      - aws-migration
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build
+      - run: npm test – –verbose
+
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: GSB
+          environment_name: GSB-env
+          version_label: ${{ github.sha }}-${{ github.run_number }}
+          region: us-east-1
+          deployment_package: deploy.zip
