@@ -30,7 +30,8 @@ jobs:
         working-directory: api-rest-gsb
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+        run: zip -r ../deploy.zip . -x '*.git*' -x 'node_modules/*' -x 'coverage/*'
+        working-directory: api-rest-gsb
 
 
       - name: Deploy to EB
