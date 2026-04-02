@@ -35,7 +35,7 @@ export class MotifController {
   /**
    * GET /api/motifs - Récupérer tous les motifs
    */
-  public getAllMotifs = async (req: Request, res: Response): Promise<void> => {
+  public getAllMotifs = async (_req: Request, res: Response): Promise<void> => {
     try {
       const motifs = await this.motifService.getAllMotifs();
 

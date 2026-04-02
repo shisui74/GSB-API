@@ -57,6 +57,6 @@ export const validateCreateVisiteur = [
       });
     }
     
-    next(); // Tout est bon, on passe au controller
+    return next(); // Tout est bon, on passe au controller
   }
 ];

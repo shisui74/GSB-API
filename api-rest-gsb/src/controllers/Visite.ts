@@ -33,7 +33,7 @@ export class VisiteController {
   /**
    * GET /api/visites - Récupérer toutes les visites
    */
-  public getAllVisites = async (req: Request, res: Response): Promise<void> => {
+  public getAllVisites = async (_req: Request, res: Response): Promise<void> => {
     try {
       const visites = await this.visiteService.getAllVisites();
       res.status(200).json({
